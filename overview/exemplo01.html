@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo 01</title>
+    <style>
+      /* Aqui tem CSS */
+    </style>
+  </head>
+  <body>
+    <!-- Aqui tem HTML -->
+    <p></p>
+    <input type="text" placeholder="Digite seu nome" />
+
+    <script>
+      //  Aqui tem Javascript
+      /*  Comentário
+          em bloco
+             pq eu quero*/
+      console.log("Iniciando a aplicação");
+
+      // variáveis
+      let nome = "Diego"; // string
+      let idade = 23; // number
+      const profissao = "Professor";
+      let socio = false; // bool
+
+      // tipo: JSON (objeto)
+      let pessoa = {
+        nome: "Debora",
+        idade: 21,
+        profissao: "Diretora",
+      };
+
+      let paragrafo = document.querySelector("p");
+
+      paragrafo.innerText = `Olá ${pessoa.nome}! Seja bem vinda`;
+    </script>
+  </body>
+</html>
