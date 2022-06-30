@@ -1,0 +1,26 @@
+#imagem,
+.minuatura{
+    width: 100px;
+}
+
+.btn-selecionar{    
+    font-size: 20pt;
+    cursor: pointer;
+}
+
+.linha-selecionada {
+    background-color: rgba(0, 128, 0, 0.419);
+}
+
+.linha:hover{
+    background-color: rgba(211, 211, 211, 0.568);
+}
+
+
+.bi-trash{
+    font-size: 18pt;
+}
+
+.invisivel{
+    display: none;
+}
