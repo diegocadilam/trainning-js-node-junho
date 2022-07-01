@@ -6,7 +6,7 @@ function configurarFormulario(){
 
         let codigoValor = document.querySelector("#txtCodigo").value;
         let nomeValor = document.querySelector("#txtNome").value;
-        let precoBolinha = document.querySelector("#txtPreco").value;        
+        let precoBolinha = document.querySelector("#txtPreco").value;
         let imagem = document.querySelector("#imagem");
         //console.log(codigo, nome, preco, imagem);
 
@@ -21,7 +21,7 @@ function configurarFormulario(){
     })
 }
 
-function cadastrarProduto(produto){        
+function cadastrarProduto(produto){
 
     let produtoValido = validarProduto(produto);
     let nossoAlerta = document.querySelector("#nossoAlerta");
@@ -31,17 +31,27 @@ function cadastrarProduto(produto){
     nossoAlerta.classList.remove('alert-danger');
 
     if(produtoValido){
-        let produtos = obterProdutos();
-        produtos.push(produto);
-    
-        localStorage.setItem("produtos", JSON.stringify(produtos));
-        carregarProdutos();
+        let xhr = new XMLHttpRequest();
+        xhr.open("post", "http://localhost:3000/produtos", false);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+        xhr.onreadystatechange = function (){
+            if(this.readyState == 4 && this.status == 201){
+                nossoAlerta.classList.add('alert-success');
+                nossoAlerta.innerHTML = "Parabéns tudo certo";
+            } else {
+                nossoAlerta.classList.add('alert-danger');
+                nossoAlerta.innerHTML = this.response;
+            }
+        }
 
-        nossoAlerta.classList.add('alert-success');
-        nossoAlerta.innerHTML = "Parabéns tudo certo";
+        xhr.send(JSON.stringify(produto))
+
+        carregarProdutos();
+        
         // Sucesso
     } else {
-        // Fracasso        
+        // Fracasso
         nossoAlerta.classList.add('alert-danger');
         nossoAlerta.innerHTML = "Preencha corretamente todas as informações";
     }
@@ -69,12 +79,12 @@ function validarProduto(produto){
 function carregarProdutos(){
     let tblProdutos = document.querySelector("#tblProdutos tbody");
     let linha = document.createElement("tr");
-    
+
 
     let produtos = obterProdutos();
     tblProdutos.innerHTML = '';
     produtos.forEach(produto => {
-        // Preciso exibir isso na tela (E agora josé?)        
+        // Preciso exibir isso na tela (E agora josé?)
         tblProdutos.innerHTML += construirRegistro(produto);
 
         //tblProdutos.appendChild(linha);
@@ -93,11 +103,11 @@ function configurarSelecao(){
         botao.addEventListener('click', function(){
             this.classList.toggle("bi-toggle-off");
             this.classList.toggle("bi-toggle-on");
-            
+
             let linha = this.parentElement.parentElement;
             linha.classList.toggle('linha-selecionada');
         });
-    });    
+    });
 }
 
 function construirRegistro(produto){
@@ -111,7 +121,19 @@ function construirRegistro(produto){
 }
 
 function obterProdutos(){
-    let produtos = JSON.parse(localStorage.getItem("produtos"));
+    // let produtos = JSON.parse(localStorage.getItem("produtos"));
+    let produtos;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("get", "http://localhost:3000/produtos", false);
+
+    xhr.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            produtos = JSON.parse(this.response);
+        }
+    }
+
+    xhr.send();
 
     if(produtos === null){
         produtos = [];
