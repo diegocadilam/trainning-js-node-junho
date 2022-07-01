@@ -1,18 +1,46 @@
 const express = require("express");
-const port = 3000;
+const cors = require("cors");
 const app = express();
+const port = 3000;
+const Produto = require("./models/produto");
+
 
 app.use(express.json());
+app.use(cors());
 
-app.get("/produtos", (req, res) => {
+app.get("/produtos", async (req, res) => {
 
-    let produtos = [{"codigo":"10","nome":"ggg hhhh 22","preco":"40","imagem":"jhghjgjh"}]
-    res.json(produtos);
-})
+  let produtos = await Produto.find();
 
-app.listen(port, ()=>{
-    console.log(`Servidor operando na porta ${port}`)
-})
-// app.listen(port, function(){
-    
-// })
+  res.status(200).send(produtos);
+});
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+app.post('/produtos', async (req, res) => {
+  
+    try {
+        let produto = req.body;
+        
+        let produtoBanco = await Produto.create(produto);
+      
+        res.status(201).json(produtoBanco);        
+    } catch (error) {
+        res.status(400).json("Código do produto já existe");
+    }
+});
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+const mongoose = require('mongoose');
+
+// Connect MongoDB at default port 27017.
+mongoose.connect('mongodb+srv://admin:admin123@cluster0.mb1zz.mongodb.net/dbMercadoLivre?retryWrites=true&w=majority', 
+(err) => {
+    if (!err) {
+        console.log('Oba conseguimos conectar node no banco.')
+    } else {
+        console.log('Ixi deu erro: ' + err)
+    }
+});
