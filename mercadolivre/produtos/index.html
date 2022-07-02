@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.0-beta1 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+  </head>
+  <body>
+
+      <div class="container">
+        <div id="divProdutos" class="row">
+            
+        </div>
+      </div>
+
+      <script>
+         // let produtos = JSON.parse(localStorage.getItem("produtos"));
+            let produtos;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("get", "http://localhost:3000/produtos", false);
+
+            xhr.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    produtos = JSON.parse(this.response);
+                }
+            }
+
+            xhr.send();
+
+            //carregar na tela
+            let divProdutos = document.querySelector("#divProdutos");
+            divProdutos.innerHTML = "";
+
+            for (const produto of produtos) {
+                let template = `<div class="col-2">
+                    <div class="card" style="width: 18rem;">
+                        <img src="${produto.imagem}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                        <h5 class="card-title">${produto.nome}</h5>                      
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item">${produto.preco}</li>                      
+                        </ul>
+                    </div>                
+                </div>`
+
+                divProdutos.innerHTML += template;
+            }
+
+      </script>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+  </body>
+</html>
